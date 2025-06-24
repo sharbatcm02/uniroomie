@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UniRoomie - Arriendo para estudiantes</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+background: #f4f6f8;
+color: #333;
+}
+header {
+background-color: #004080;
+color: white;
+padding: 1rem 2rem;
+text-align: center;
+}
+h1 {
+margin: 0;
+font-weight: 700;
+}
+main {
+max-width: 1100px;
+margin: 2rem auto;
+padding: 0 1rem;
+}
+.filters {
+background: white;
+padding: 1rem 1.5rem;
+border-radius: 8px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+margin-bottom: 2rem;
+}
+.filters label {
+display: block;
+margin-top: 1rem;
+font-weight: 600;
+}
+select, input[type="number"] {
+width: 100%;
+padding: 0.5rem;
+margin-top: 0.25rem;
+border-radius: 4px;
+border: 1px solid #ccc;
+}
+.departments-list {
+display: grid;
+grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+gap: 1.5rem;
+}
+.department-card {
+background: white;
+border-radius: 8px;
+box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+padding: 1rem;
+display: flex;
+flex-direction: column;
+}
+.department-card h3 {
+margin: 0 0 0.5rem 0;
+color: #004080;
+}
+.department-info {
+font-size: 0.9rem;
+margin-bottom: 0.5rem;
+flex-grow: 1;
+}
+.benefits {
+font-size: 0.85rem;
+color: #555;
+}
+footer {
+background: #004080;
+color: white;
+text-align: center;
+padding: 1rem 2rem;
+margin-top: 3rem;
+}
+button {
+background-color: #004080;
+border: none;
+color: white;
+padding: 0.7rem 1.2rem;
+border-radius: 5px;
+font-weight: 600;
+cursor: pointer;
+margin-top: 1rem;
+width: 100%;
+}
+button:hover {
+background-color: #003060;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>UniRoomie</h1>
+<p>Encuentra departamentos de arriendo cerca de universidades en Ecuador</p>
+</header>
+
+<main>
+<section class="filters">
+<h2>Filtra tu búsqueda</h2>
+<label for="university">Universidad:</label>
+<select id="university">
+<option value="">-- Selecciona una universidad --</option>
+<option value="ups">Universidad Politécnica Salesiana</option>
+<option value="ecuador">Universidad de Ecuador</option>
+<option value="sanfrancisco">Universidad San Francisco</option>
+<option value="usfq">Universidad San Francisco de Quito</option>
+<option value="catolica">Pontificia Universidad Católica del Ecuador</option>
+</select>
+
+<label for="roomies">Tipo de roomie:</label>
+<select id="roomies">
+<option value="">-- Todos --</option>
+<option value="soltero">Soltero</option>
+<option value="pareja">Pareja</option>
+<option value="grupo">Grupo</option>
+</select>
+
+<label for="sector">Sector / Zona:</label>
+<select id="sector">
+<option value="">-- Cualquier sector --</option>
+<option value="norte">Norte</option>
+<option value="sur">Sur</option>
+<option value="centro">Centro</option>
+<option value="oeste">Oeste</option>
+<option value="este">Este</option>
+</select>
+
+<label for="minPrice">Precio mínimo (USD):</label>
+<input type="number" id="minPrice" min="0" placeholder="Ej: 100" />
+
+<label for="maxPrice">Precio máximo (USD):</label>
+<input type="number" id="maxPrice" min="0" placeholder="Ej: 500" />
+
+<label for="benefits">Beneficios:</label>
+<select id="benefits">
+<option value="">-- Todos --</option>
+<option value="wifi">WiFi</option>
+<option value="seguridad">Seguridad 24h</option>
+<option value="amoblado">Amoblado</option>
+<option value="parqueadero">Parqueadero</option>
+<option value="lavanderia">Lavandería</option>
+</select>
+
+<button id="filterBtn">Buscar</button>
+</section>
+
+<section class="departments-list" id="departments-list">
+<!-- Resultados aparecerán aquí -->
+</section>
+</main>
+
+<footer>
+<p>© 2025 UniRoomie - Todos los derechos reservados</p>
+</footer>
+
+<script>
+const departamentos = [
+{
+id: 1,
+nombre: "Depto céntrico cerca UPS",
+universidad: "ups",
+roomies: "soltero",
+sector: "centro",
+precio: 300,
+beneficios: ["wifi", "seguridad", "amoblado"],
+descripcion: "Departamento amoblado, ideal para estudiantes que buscan tranquilidad y buena conexión a internet."
+},
+{
+id: 2,
+nombre: "Departamento compartido Norte Quito",
+universidad: "usfq",
+roomies: "grupo",
+sector: "norte",
+precio: 200,
+beneficios: ["wifi", "parqueadero"],
+descripcion: "Habitación privada con espacio para compartir con otros estudiantes. Zona segura y accesible."
+},
+{
+id: 3,
+nombre: "Apto pareja sector Sur",
+universidad: "ecuador",
+roomies: "pareja",
+sector: "sur",
+precio: 400,
+beneficios: ["amoblado", "lavanderia", "seguridad"],
+descripcion: "Apartamento amoblado ideal para parejas, con lavandería y seguridad 24h."
+},
+{
+id: 4,
+nombre: "Estudio económico cerca de Católica",
+universidad: "catolica",
+roomies: "soltero",
+sector: "oeste",
+precio: 150,
+beneficios: ["wifi"],
+descripcion: "Pequeño estudio con internet, ideal para estudiantes con presupuesto limitado."
+},
+{
+id: 5,
+nombre: "Depto amplio sector Centro",
+universidad: "sanfrancisco",
+roomies: "grupo",
+sector: "centro",
+precio: 350,
+beneficios: ["wifi", "parqueadero", "seguridad", "lavanderia"],
+descripcion: "Amplio departamento para compartir, con múltiples beneficios y cerca de la universidad."
+}
+];
+
+function filtrarDepartamentos() {
+const universidad = document.getElementById('university').value;
+const roomies = document.getElementById('roomies').value;
+const sector = document.getElementById('sector').value;
+const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+const maxPrice = parseInt(document.getElementById('maxPrice').value) || Infinity;
+const benefits = document.getElementById('benefits').value;
+
+let resultados = departamentos.filter(depto => {
+const cumpleUniversidad = universidad ? depto.universidad === universidad : true;
+const cumpleRoomies = roomies ? depto.roomies === roomies : true;
+const cumpleSector = sector ? depto.sector === sector : true;
+const cumplePrecio = depto.precio >= minPrice && depto.precio <= maxPrice;
+const cumpleBeneficios = benefits ? depto.beneficios.includes(benefits) : true;
+
+return cumpleUniversidad && cumpleRoomies && cumpleSector && cumplePrecio && cumpleBeneficios;
+});
+
+mostrarResultados(resultados);
+}
+
+function mostrarResultados(lista) {
+const contenedor = document.getElementById('departments-list');
+contenedor.innerHTML = '';
+
+if (lista.length === 0) {
+contenedor.innerHTML = '<p>No se encontraron departamentos que coincidan con los filtros.</p>';
+return;
+}
+
+lista.forEach(depto => {
+const card = document.createElement('div');
+card.className = 'department-card';
+
+card.innerHTML = `
+<h3>${depto.nombre}</h3>
+<p class="department-info"><strong>Universidad:</strong> ${mostrarUniversidad(depto.universidad)}</p>
+<p class="department-info"><strong>Tipo de roomie:</strong> ${depto.roomies}</p>
+<p class="department-info"><strong>Sector:</strong> ${depto.sector}</p>
+<p class="department-info"><strong>Precio:</strong> $${depto.precio}</p>
+<p class="benefits"><strong>Beneficios:</strong> ${depto.beneficios.join(', ')}</p>
+<p>${depto.descripcion}</p>
+`;
+
+contenedor.appendChild(card);
+});
+}
+
+function mostrarUniversidad(codigo) {
+const universidades = {
+ups: "Universidad Politécnica Salesiana",
+ecuador: "Universidad de Ecuador",
+sanfrancisco: "Universidad San Francisco",
+usfq: "Universidad San Francisco de Quito",
+catolica: "Pontificia Universidad Católica del Ecuador"
+};
+return universidades[codigo] || codigo;
+}
+
+document.getElementById('filterBtn').addEventListener('click', filtrarDepartamentos);
+
+// Mostrar todos inicialmente
+mostrarResultados(departamentos);
+</script>
+</body>
+</html>
